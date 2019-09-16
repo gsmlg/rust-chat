@@ -11,17 +11,20 @@ fn main () {
 
     thread::spawn(move || {
         loop {
-            let resp = reqwest::get("http://localhost:8088/room/1").unwrap();
+            let mut resp = reqwest::get("http://localhost:8088/api/room/1").unwrap();
             let mut t = term::stdout().unwrap();
             t.fg(term::color::BLUE).unwrap();
-            write!(t, "{:?}", resp.status());
+            write!(t, "\n");
             if resp.status().is_success() {
-                println!("success!");
+                resp.copy_to(&mut t);
             } else if resp.status().is_server_error() {
-                println!("server error!");
+                t.fg(term::color::RED).unwrap();
+                write!(t, "Server error! Status: {:?}", resp.status());
             } else {
-                println!("Something else happened. Status: {:?}", resp.status());
+                t.fg(term::color::CYAN).unwrap();
+                write!(t, "Something else happened. Status: {:?}", resp.status());
             }
+            write!(t, "\n");
             t.reset().unwrap();
         }
     });
