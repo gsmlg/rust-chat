@@ -10,18 +10,20 @@ fn main () {
     let mut rl = Editor::<()>::new();
 
     thread::spawn(move || {
-        let resp = reqwest::get("http://localhost:8088/room/1").unwrap();
-        let mut t = term::stdout().unwrap();
-        t.fg(term::color::BLUE).unwrap();
-        write!(t, "{:?}", resp.status());
-        if resp.status().is_success() {
-            println!("success!");
-        } else if resp.status().is_server_error() {
-            println!("server error!");
-        } else {
-            println!("Something else happened. Status: {:?}", resp.status());
+        loop {
+            let resp = reqwest::get("http://localhost:8088/room/1").unwrap();
+            let mut t = term::stdout().unwrap();
+            t.fg(term::color::BLUE).unwrap();
+            write!(t, "{:?}", resp.status());
+            if resp.status().is_success() {
+                println!("success!");
+            } else if resp.status().is_server_error() {
+                println!("server error!");
+            } else {
+                println!("Something else happened. Status: {:?}", resp.status());
+            }
+            t.reset().unwrap();
         }
-        t.reset().unwrap();
     });
 
     loop {
