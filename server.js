@@ -25,7 +25,7 @@ const server = http.createServer((req, res) => {
             res.end();
         });
     } else {
-        res.end();        
+        res.end();
     }
 });
 
@@ -35,4 +35,4 @@ server.on('clientError', (err, socket) => {
 server.on('error', (err) => {
     console.error(err);
 });
-server.listen(8088);
+server.listen(12345);
