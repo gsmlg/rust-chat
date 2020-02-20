@@ -12,7 +12,7 @@ fn main () {
 
     thread::spawn(move || {
         loop {
-            let mut resp = reqwest::get("http://202.173.9.55:12345/api/room/1").unwrap();
+            let mut resp = reqwest::get("http://127.0.0.1:12345/api/room/1").unwrap();
             let mut t = term::stdout().unwrap();
             if resp.status().is_success() {
                 resp.copy_to(&mut t);
